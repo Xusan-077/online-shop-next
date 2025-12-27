@@ -41,4 +41,3 @@ export default function RootLayout({
     </html>
   );
 }
-// https://github.com/Xusan-077/online-shop-next.git
