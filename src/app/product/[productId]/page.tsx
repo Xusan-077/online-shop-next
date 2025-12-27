@@ -1,18 +1,22 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { IProduct } from "@/types/products";
 import Rating from "@/components/Rating";
 import { useEffect, useState } from "react";
 import { useFavoriteStore } from "@/store/FavoriteStore";
 import API from "@/API";
+import { useCartsStore } from "@/store/CartStore";
 
 export default function ProductDetail() {
   const params = useParams();
   const productId = params?.productId as string;
 
   const { favorites, toggleToFavorite } = useFavoriteStore();
+  const { handleAddToCart, handleDeleteFromCart, carts } = useCartsStore();
+
+  const router = useRouter();
 
   const {
     data: product,
@@ -30,6 +34,8 @@ export default function ProductDetail() {
   const [img, setImg] = useState<string>(
     product?.images[1] || product?.images[2] || ""
   );
+
+  const inCart = carts.find((el) => el.id == product?.id);
 
   useEffect(() => {
     setImg(product?.images[1] || product?.images[2] || "");
@@ -180,9 +186,47 @@ export default function ProductDetail() {
                 </div>
 
                 <div className="grid grid-cols-[1fr_70px] items-center gap-2">
-                  <button className="bg-[#7000FF] w-full p-2 rounded-lg text-white flex justify-center items-center gap-1 cursor-pointer">
-                    Savatga
-                  </button>
+                  {inCart ? (
+                    <div className="grid grid-cols-[3fr_1fr] gap-2">
+                      <div
+                        onClick={(e): void => e.stopPropagation()}
+                        className="justify-between p-1.25 cursor-pointer flex items-center bg-[#F0F2F5FF] w-full gap-1.25 rounded-lg"
+                      >
+                        <button
+                          onClick={(): void => handleDeleteFromCart(product!)}
+                          className="cursor-pointer text-[20px] text-black bg-white w-6.25 flex items-center justify-center"
+                        >
+                          -
+                        </button>
+                        <p className="text-[18px]">{inCart.count}</p>
+                        <button
+                          onClick={(): void => handleAddToCart(product!)}
+                          className="cursor-pointer text-[20px] text-black bg-white w-6.25 rounded-lg flex items-center justify-center"
+                        >
+                          +
+                        </button>
+                      </div>
+                      <div
+                        onClick={() => router.push("/basket")}
+                        className="bg-[#E5E5FFFF] cursor-pointer text-[#7000FF] rounded-lg flex items-center justify-center"
+                      >
+                        Visit
+                      </div>
+                    </div>
+                  ) : (
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        console.log("click");
+
+                        handleAddToCart(product!);
+                        console.log(carts);
+                      }}
+                      className="bg-[#7000FF] w-full p-2 rounded-lg text-white flex justify-center items-center gap-1 cursor-pointer"
+                    >
+                      Savatga
+                    </button>
+                  )}
                   <div
                     onClick={(e) => {
                       e.stopPropagation();

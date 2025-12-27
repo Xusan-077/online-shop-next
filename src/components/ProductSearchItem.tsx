@@ -6,7 +6,11 @@ import { IProduct } from "@/types/products";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-export default function ProductItem({ product }: { product: IProduct }) {
+interface IProps {
+  product: IProduct;
+}
+
+export default function ProductSearchItem({ product }: IProps) {
   const { favorites, toggleToFavorite } = useFavoriteStore();
   const { handleAddToCart, handleDeleteFromCart, carts } = useCartsStore();
 
@@ -23,7 +27,7 @@ export default function ProductItem({ product }: { product: IProduct }) {
       onClick={goToProduct}
       className="bg-white relative rounded-lg overflow-hidden hover:shadow-sm duration-300 flex flex-col"
     >
-      <div className="relative w-full h-70 overflow-hidden bg-[#EFEFEFFF]">
+      <div className="relative w-full py-5 overflow-hidden bg-[#EFEFEFFF]">
         <div
           onClick={(e) => {
             e.stopPropagation();
@@ -43,8 +47,8 @@ export default function ProductItem({ product }: { product: IProduct }) {
           <Image
             src={product.thumbnail}
             alt={product.title}
-            width={300}
-            height={220}
+            width={150}
+            height={200}
             className="object-contain cursor-pointer"
           />
         </div>
@@ -54,12 +58,12 @@ export default function ProductItem({ product }: { product: IProduct }) {
         </span>
       </div>
 
-      <div className="flex flex-col p-4 flex-1">
-        <div className="mb-5">
-          <span className="text-[14px] font-bold text-gray-500">
+      <div className="flex flex-col p-2 flex-1">
+        <div className="mb-1">
+          <span className="text-[12px] font-bold text-gray-500">
             ${product?.price}
           </span>
-          <h3 className="text-[14px] font-semibold text-gray-900 line-clamp-1">
+          <h3 className="text-[12px] font-semibold text-gray-900 line-clamp-1">
             {product?.title}
           </h3>
           <p className="text-gray-500 text-[12px] mb-1 line-clamp-1">
@@ -87,18 +91,18 @@ export default function ProductItem({ product }: { product: IProduct }) {
           {inCart ? (
             <div
               onClick={(e): void => e.stopPropagation()}
-              className="justify-between p-1.25 cursor-pointer flex items-center bg-[#F0F2F5FF] w-full gap-1.25 rounded-lg"
+              className="justify-between h-7.5 cursor-pointer flex items-center bg-[#F0F2F5FF] w-full gap-1.25 rounded-lg"
             >
               <button
                 onClick={(): void => handleDeleteFromCart(product)}
-                className="cursor-pointer text-[20px] text-black bg-white w-6.25 flex items-center justify-center"
+                className="cursor-pointer text-[20px] h-6.25 ml-1 text-black bg-white w-6.25 rounded-lg flex items-center justify-center"
               >
                 -
               </button>
               <p className="text-[18px]">{inCart.count}</p>
               <button
                 onClick={(): void => handleAddToCart(product)}
-                className="cursor-pointer text-[20px] text-black bg-white w-6.25 rounded-lg flex items-center justify-center"
+                className="cursor-pointer text-[20px] h-6.25 mr-1 text-black bg-white w-6.25 rounded-lg flex items-center justify-center"
               >
                 +
               </button>
@@ -112,7 +116,7 @@ export default function ProductItem({ product }: { product: IProduct }) {
                 handleAddToCart(product);
                 console.log(carts);
               }}
-              className="bg-[#7000FF] w-full p-2 rounded-lg text-white flex justify-center items-center gap-1 cursor-pointer"
+              className="bg-[#7000FF] text-[14px] w-full h-7.5 rounded-lg text-white flex justify-center items-center gap-1 cursor-pointer"
             >
               Savatga
             </button>

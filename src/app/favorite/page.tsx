@@ -10,9 +10,9 @@ export default function Favorites() {
   return (
     <section className="">
       <div className="container">
-        <h2 className="flex items-center cursor-pointer my-10">
+        {/* <h2 className="flex items-center cursor-pointer my-10">
           <span className="text-[28px] font-bold">Favorite Products</span>
-        </h2>
+        </h2> */}
         {favorites.length === 0 && (
           <div className="flex flex-col items-center my-37.5">
             <img

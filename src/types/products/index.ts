@@ -35,6 +35,7 @@ interface IReview {
 }
 
 export interface IProduct {
+  count: number;
   id: number;
   title: string;
   description: string;
